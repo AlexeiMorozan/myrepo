@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Angular JS Filters</title>
+	<script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+</head>
+<style>
+	h1{
+		background-color: coral;
+		text-align: center;
+		border-bottom: solid mediumorchid 4px;
+	}
+	.message{
+		color: coral;
+	}
+	.divinfo{
+		text-align: center;
+	}
+</style>
+<body>
+	<h1>Formular employe</h1>
+	<div ng-app = "myApp" ng-controller = "myCtrl">
+	<form class="inputs">
+		<p>Name:</p>
+		<input type = "text" ng-model = "pioner.firstName">
+		<p>Surname: </p>
+		<input type = "text" ng-model = "pioner.lastName">
+		<p>Date of birth: </p>
+		<input type="date" ng-model="pioner.date" id="date">
+		<p>Sex:</p>
+		<label>
+		<input type="radio" ng-model="pioner.sex" value="male">
+		Male
+		</label>
+		<label>
+		<input type="radio" ng-model="pioner.sex" value="female">
+		Female
+		</label>
+		</br>
+		<p>Education:</p>
+		<label>
+		<input type="radio" ng-model="pioner.education" value="secondary">
+		Secondary
+		</label></br>
+		<label>
+		<input type="radio" ng-model="pioner.education" value="higher">
+		Higher
+		</label></br>
+		<label>
+		<input type="radio" ng-model="pioner.education" value="master">
+		Master
+		</label></br>
+		<label>
+		<p>Department:</p>
+		<select name="department" ng-model="pioner.department">
+		<option value="programming">Programming</option>
+		<option value="web">Web</option>
+		<option value="Math">Mathematica and Informatica</option>
+		</select><br>
+		<p>Salary:</p>
+		<input type="number" ng-model="pioner.salary">
+		<br><br>
+		<button ng-click="show()" ng-disabled="salaryIdentif()">Submit</button>
+		<button ng-click="remove()" ng-disabled="salaryIdentif()">Remove</button>
+	</form>
+	<div ng-show="showInfo()" class="divinfo">
+		<h1>Info</h1>
+		<div ng-model="name"><span>Name:</span> {{name}}</div>
+		<div ng-model="birth"><span>Date of birth:</span> {{birth | date : "dd MMMM y"}}</div>
+		<p>
+			<span>Age:</span> {{temp=(today | date : "yyyy") - (pioner.date | date : "yyyy")}}
+		</p>
+		<p ng-show="temp<18" class="message">Too small,sorry</p>
+		<p ng-show="temp>65" class="message">Too late for working,sorry</p>
+		<div ng-model="sex">
+			<span>Sex:</span> {{sex}}
+		</div>
+		<div ng-model="education">
+			<span>Education:</span> {{education | uppercase}}
+		</div>
+		<div ng-model="department">
+			<span>Department:</span> {{department | uppercase}}
+		</div>
+		<div ng-model="salary">
+			<span>Salary:</span> {{salary }}
+		</div>
+	</div>
+	<br/>
+
+	<script>
+		var mainApp = angular.module("myApp", []);
+
+		mainApp.controller('myCtrl', function($scope) {
+		$scope.show = function() {
+			
+			$scope.name = $scope.pioner.firstName + " " + $scope.pioner.lastName;
+			$scope.birth = $scope.pioner.date;
+			$scope.sex = $scope.pioner.sex;
+			$scope.education = $scope.pioner.education;
+			$scope.department = $scope.pioner.department;
+			$scope.salary = $scope.pioner.salary;
+			$scope.flag = true;
+		};
+		$scope.showInfo = function() {
+			if ($scope.flag == true) {
+			return true;
+			}
+		};
+		$scope.remove = function() {
+			$scope.pioner.firstName = "";
+			$scope.pioner.lastName = "";
+			$scope.pioner.date = "";
+			$scope.pioner.sex = "";
+			$scope.pioner.education = "";
+			$scope.pioner.department = "";
+			$scope.pioner.salary = "";
+			$scope.flag = false;
+		}
+
+		$scope.today = new Date();
+		$scope.salaryIdentif = function() {
+			if ($scope.pioner.salary > 4999 && $scope.pioner.salary < 10000) {
+			return false;
+			} 
+			
+		return true;
+		}
+		});
+	</script>
+
+</body>
+</html>
